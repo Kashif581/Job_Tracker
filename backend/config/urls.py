@@ -14,9 +14,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+# This file is responsible for URL routing
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.http import JsonResponse
+
+def home(request):
+    return JsonResponse({
+        "message": "Welcome to Job Tracker API",
+        "status": "Running"
+    })
 
 urlpatterns = [
+    path("", home),
     path('admin/', admin.site.urls),
+
+    path('api/', include("jobs.urls"))
 ]
