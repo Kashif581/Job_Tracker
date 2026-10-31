@@ -7,6 +7,9 @@ For more information on this file, see
 https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
 """
 
+
+# Asynchronous server entry point
+# ASGI supports asynchronous application interfaces and it useful for applications that need capabilites such as websockets or long-lived connections when configured appropriately.
 import os
 
 from django.core.asgi import get_asgi_application

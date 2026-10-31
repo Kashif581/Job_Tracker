@@ -1,10 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-# In this file we are defining our Database Structure
-# Django already provides a built-in User model through django.contrib.auth.
+# This file defines the structure of our database.
+# In Django, we use python calsses called models to represent database tables.
+# for our job tacker, we have two main models:
+# 1 - JobApplication
+# 2 - Resume
 
+# models.Model tells Django that Resume is a database model. Django will create a corresponding database table for it.
+# ForeignKey: This establishes a relationship between Resume and Django's built-in User model
+# on_delete=models.CASCADE means that if the user is deleted, their associated resume database records are also deleted
+# s3_key is to store the location/key of the resume in Amazon S3.
+# def __str__(self):
+#   return self.original_filename
+# it provide a human-readable representation of the object
+# instead of seeing: Resume object (1) we see: CV_AI.pdf
 class Resume(models.Model):
     user = models.ForeignKey(
         User,
@@ -24,6 +34,37 @@ class Resume(models.Model):
     def __str__(self):
         return self.original_filename
 
+
+# This represent a job application that a user wants to track
+# Field	Meaning
+# CharField	Short text
+# TextField	Longer text
+# URLField	URL
+# DateField	Date
+# DecimalField	Decimal numbers
+# DateTimeField	Date and time
+# ForeignKey	Relationship with another table
+# what are choices?
+# we don't want users entering random application statuses. we use Django's TextChoices to define an allowed set of values. This helps maintain consistency in our database and application
+
+#  what happens when we change a model?
+# suppose we add a new field. 
+# company_website = models.URLField(blank=True)
+# our python code has changes, but the postgresql table hasn't changed yet. that's why we use Django migrations
+# migrations/ - Database schema history
+# This folder contains files that descirbe changes to our database structure.
+# suppose intially our JobApplication model contains
+# company, position, status
+# later, we add
+# salary, deadline, location
+# we need to update the actual database table.
+# we run python manage.py makemigrations Django generates a migration file inside jobs/migrations/ then python manage.py migrate
+# Command	Responsibility
+# makemigrations	Generates migration instructions
+# migrate	Applies migration instructions to the database
+# showmigrations	Shows which migrations have been applied
+
+# Think of migrations as version history for your database structure.
 
 class JobApplication(models.Model):
 
@@ -69,6 +110,7 @@ class JobApplication(models.Model):
         choices=JobType.choices,
         blank=True
     )
+    
     status = models.CharField(
         max_length=20,
         choices=Status.choices,

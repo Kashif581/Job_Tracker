@@ -26,6 +26,18 @@ def home(request):
         "status": "Running"
     })
 
+# when someone visits:
+# http://localhost:8000/admin/
+# Django directs the request to its built-in admin application.
+
+# when someone visits:
+# http://localhost:8000/api/
+# Django forwards the routing responsibility to 
+# include("jobs.urls")
+
+# Because we don't want to put every API endpoint inside one central file.
+# instead we keep project-level routes in config/urls.py and application-specific routes in jobs/urls.py.
+
 urlpatterns = [
     path("", home),
     path('admin/', admin.site.urls),
