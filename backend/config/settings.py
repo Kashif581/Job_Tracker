@@ -35,6 +35,17 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+# Installed apps
+# Application	Responsibility
+# admin	Admin dashboard
+# auth	Users, passwords, authentication
+# contenttypes	Tracks Django model types
+# sessions	Manages user sessions
+# messages	Temporary messages
+# staticfiles	CSS, JavaScript, and other static files
+# rest_framework	Helps us build REST APIs
+# corsheaders	Handles Cross-Origin Resource Sharing
+# jobs	Our own Job Tracker application
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -52,6 +63,16 @@ INSTALLED_APPS = [
     'jobs',
 ]
 
+
+# Middleware is code that runs during the request-response process
+# e.g a user sends: GET /api/jobs/
+# the request passes through middlewae before reaching our API view. The response also passes through middleware on its way back
+# Examples:
+# - Security middleware applies security-related behavior.
+# - Session middleware manages sessions.
+# - Authentication middleware associates the request with a user.
+# - CORS middleware adds the appropriate cross-origin response headers.
+# Think of middleware as a series of checkpoints between the client and our application.
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -62,9 +83,20 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
 # This gives us two authentication options:
 # SessionAuthentication: Uses a logged-in browser session.
 # BasicAuthentication: Uses a username and password with an HTTP request
+
+# This tells Django REST Framework:
+# - How to authenticate API requests.
+# - What permissions to apply by default.
+# - How to paginate API responses.
+# - How many records to return per page.
+# Notice something important: because we configured IsAuthenticated globally, API requests require authentication by default unless a view overrides that permission.
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -102,6 +134,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# This tells Django:
+# - Which database engine to use.
+# - Which database to connect to.
+# - Which username and password to use.
+# - Where the database server is located.
 
 DATABASES = {
     'default': {

@@ -5,6 +5,37 @@ from rest_framework.permissions import IsAuthenticated
 from .models import JobApplication
 from .serializers import JobApplicationSerializer
 
+# this file connects our URLs, serializers, models
+# A ViewSet groups related API operations together.
+
+# Without a ModelViewSet, we could write separate views for:
+# - GET all applications.
+# - POST a new application.
+# - GET one application.
+# - PUT/PATCH an application.
+# - DELETE an application.
+# ModelViewSet provides these standard CRUD actions automatically.
+
+# what is serializer_class?
+# it tells the viewset which serializer to use when validating incoming data and formatting responses
+
+# What is permission_classes?
+# it ensures that only authenticated users can access this API
+
+# What is get_queryset()?
+#  Suppose our database contains:
+# ID	Company	User
+# 1	Google	Kashif
+# 2	Microsoft	Ali
+# 3	Amazon	Kashif
+
+# When Kashif logs in, the API only returns:
+# Google
+# Amazon
+
+# What is perform_create()?
+# When someone creates a job application, we automatically associate it with the currently authenticated user.
+
 class JobApplicationViewSet(viewsets.ModelViewSet):
     serializer_class = JobApplicationSerializer
     permission_classes = [IsAuthenticated]

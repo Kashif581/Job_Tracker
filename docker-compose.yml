@@ -1,0 +1,48 @@
+services:
+  # Django backend
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: job_tracker_backend
+
+    ports:
+      - "8000:8000"
+
+    environment:
+      DB_NAME: job_tracker
+      DB_USER: postgres
+      DB_PASSWORD: dev_password_only
+      DB_HOST: db
+      DB_PORT: 5432
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    volumes:
+      - ./backend:/app
+
+  # PostgreSQL database
+  db:
+    image: postgres:16
+
+    container_name: job_tracker_database
+
+    environment:
+      POSTGRES_DB: job_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dev_password_only
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d job_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
